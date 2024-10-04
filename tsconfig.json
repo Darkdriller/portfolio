@@ -19,8 +19,10 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "target": "es5",
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/**/*.ts", "app/**/*.tsx", "components/**/*.ts", "components/**/*.tsx", "lib/**/*.ts", "styles.ts", "public/**/*.js"],
   "exclude": ["node_modules"]
 }
