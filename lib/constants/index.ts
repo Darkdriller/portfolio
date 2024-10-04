@@ -32,15 +32,15 @@ export const navLinks: NavLink[] = [
   },
   {
     id: "work",
-    title: "Work",
-  },
-  {
-    id: "contact",
-    title: "Contact",
+    title: "Experience",
   },
   {
     id: "projects",
     title: "Projects",
+  },
+  {
+    id: "contact",
+    title: "Contact",
   },
 ];
 

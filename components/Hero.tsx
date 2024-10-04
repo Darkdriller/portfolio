@@ -21,7 +21,7 @@ const Hero = () => {
             <br className="sm:block hdden"/>
             <JelloText text="with a proficiency in Full Stack Development." className="inline-block" />
             <br/><br/>
-            <a href="" target="_blank"
+            <a href="https://drive.google.com/file/d/1hjKocj52VzaWcQANctK9-TKIyUk198Xc/view?usp=drive_link" target="_blank"
             className="relative z-10 text-[#915eff] font-bold">
               My Resume
             </a>
