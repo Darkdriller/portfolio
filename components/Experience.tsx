@@ -1,6 +1,4 @@
-
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import { motion, useInView } from "framer-motion";
 import 'react-vertical-timeline-component/style.min.css';
@@ -9,7 +7,6 @@ import { experiences } from '@/lib/constants';
 import { SectionWrapper } from '@/lib/hoc';
 import { textVariant } from '@/lib/utils/motion';
 import { useTheme } from 'next-themes';
-
 
 interface ExperienceType {
   date: string;
@@ -23,12 +20,26 @@ interface ExperienceType {
 const ExperienceCard: React.FC<{ experience: ExperienceType }> = ({ experience }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: false, amount: 0.5 });
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const isDark = mounted && currentTheme === 'dark';
 
   return (
     <VerticalTimelineElement
-      contentStyle={{ background: theme === 'dark' ? '#1d1836' : '#f3f4f6', color: '', border: 'none'}}
-      contentArrowStyle={{ borderRight: `7px solid ${theme === 'dark' ? '#1d1836' : '#fff'}`}}
+      contentStyle={{ 
+        background: mounted ? (isDark ? '#1d1836' : '#f3f4f6') : 'transparent', 
+        color: '', 
+        border: 'none'
+      }}
+      contentArrowStyle={{ 
+        borderRight: mounted ? `7px solid ${isDark ? '#1d1836' : '#fff'}` : 'none'
+      }}
       date={experience.date}
       dateClassName='text-slate-800 dark:text-slate-100 text-[16px] font-bold'
       iconStyle={{ background: experience.iconBg }}
