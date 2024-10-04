@@ -1,11 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Tilt } from "react-tilt";
-
 import { motion } from "framer-motion";
 import { styles } from "../styles";
-import { github } from '../public/assets';
 import  SectionWrapper from "../lib/hoc/SectionWrapper";
 import { projects } from "../lib/constants";
 import { fadeIn, textVariant } from "../lib/utils/motion";
@@ -14,7 +11,7 @@ import { fadeIn, textVariant } from "../lib/utils/motion";
 interface Tag {
   name: string;
   color: string;
-}``
+}
 
 interface ProjectCardProps {
   index: number;
@@ -56,22 +53,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ index, name, description, tag
   //   </motion.div>
   // )
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      initial="hidden"
-      animate="visible"
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      <Tilt
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className="w-full"
+    // <motion.div
+    //   variants={{
+    //     hidden: { opacity: 0, x: index % 2 === 0 ? -100 : 100 },
+    //     visible: { opacity: 1, x: 0 },
+    //   }}
+    //   initial="hidden"
+    //   animate="visible"
+    //   transition={{ duration: 0.8, delay: index * 0.2, type: "spring", stiffness: 100 }}
+
+    // >
+    <motion.div variants={fadeIn("up", "spring", index * 0.75, 0.75)}>
+      <div
+        className="w-full transition-transform duration-50 hover:scale-[1.02]"
       >
         <div className="w-full bg-gradient-to-br from-gray-100 to-transparent dark:from-gray-800 dark:to-transparent rounded-3xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-col md:flex-row h-full">
@@ -109,12 +103,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ index, name, description, tag
                 alt={`${name} preview`}
                 width={500}
                 height={300}
-                className="rounded-tl-3xl object-cover w-full h-full"
+                className="rounded-tl-3xl object-cover w-[500px] h-[300px]"
               />
             </div>
           </div>
         </div>
-      </Tilt>
+      </div>
     </motion.div>
   );
 }
@@ -129,7 +123,7 @@ const Projects: React.FC = () => {
       <div className='w-full flex'>
         <motion.p
           variants={fadeIn("", "", 0.1, 1)}
-          className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]"
+          className="mt-3 text-slate-800 dark:text-slate-300 text-[17px] max-w-3xl leading-[30px]"
           style={{ justifyContent: 'space-around', textAlign: 'justify', textJustify: 'inter-word' }}>
             I have worked on a wide range of projects. Following projects showcases my skills and experience through
             real-world examples of my work. Each project is briefly described with links to code repositories and live demos in it. It reflects my

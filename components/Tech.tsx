@@ -7,10 +7,6 @@ import { technologies } from '../lib/constants';
 import { styles } from '../styles';
 import { textVariant, fadeIn } from '../lib/utils/motion';
 
-interface Technology {
-  name: string;
-  icon: string;
-}
 
 const Tech: React.FC = () => {
   return (

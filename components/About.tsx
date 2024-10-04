@@ -41,7 +41,7 @@ const About: React.FC = () => {
       </motion.div>
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
+        className='mt-4 text-slate-700 dark:text-slate-300 text-[17px] max-w-3xl leading-[30px]'
         style={{ justifyContent: 'space-around', textAlign: 'justify', textJustify: 'inter-word' }}
       >
         Hi, my name is Dhruvjyoti Swain and I have a B.Tech degree in Data Science and Artificial Intelligence. 

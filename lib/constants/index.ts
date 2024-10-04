@@ -17,6 +17,7 @@ import {
   moodys,
   simple_lang,
   localllm,
+  sih,
 } from "@/public/assets";
 
 interface NavLink {
@@ -219,6 +220,27 @@ const projects: Project[] = [
     image: simple_lang.src,
     source_code_link: "https://github.com/Darkdriller/SimpleLang",
   },
+  {
+    name: "Rural Clustering",
+    description:
+      "A web app to cluster rural areas based on their amenities, population density and connectivity. Also uses a polynomial regression model to predict the ranking of a cluster based on the amenities in the area. Winner of Smart India Hackathon 2022.",
+    tags: [
+      {
+        name: "Python",
+        color: "green-text-gradient",
+      },
+      {
+        name: "Regression",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "React",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: sih.src,
+    source_code_link: "https://github.com/Darkdriller/sih_code_of_duty_1",
+  }
 ];
 
 export { services, technologies, experiences, projects };

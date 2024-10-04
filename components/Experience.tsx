@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import { motion, useInView } from "framer-motion";
 import 'react-vertical-timeline-component/style.min.css';
@@ -9,7 +9,6 @@ import { experiences } from '@/lib/constants';
 import { SectionWrapper } from '@/lib/hoc';
 import { textVariant } from '@/lib/utils/motion';
 import { useTheme } from 'next-themes';
-import Blob from './Blob';
 
 
 interface ExperienceType {
@@ -23,7 +22,7 @@ interface ExperienceType {
 
 const ExperienceCard: React.FC<{ experience: ExperienceType }> = ({ experience }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, amount: 0.5 });
+  const isInView = useInView(cardRef, { once: false, amount: 0.5 });
   const { theme } = useTheme();
 
   return (
@@ -65,14 +64,13 @@ const ExperienceCard: React.FC<{ experience: ExperienceType }> = ({ experience }
 };
 
 const Experience: React.FC = () => {
-  const [refresh, setRefresh] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setRefresh(prev => !prev);
+          // Intersection logic can be added here if needed
         }
       },
       { threshold: 0.1 }

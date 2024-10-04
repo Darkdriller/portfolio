@@ -26,7 +26,7 @@ import moodys from "./company/moodys.png";
 
 import localllm from "./localllm.png";
 import simple_lang from "./simple_lang.png";
-
+import sih from "./sih.png";
 
 export {
   logo,
@@ -54,4 +54,5 @@ export {
   moodys,
   localllm,
   simple_lang,
+  sih,
 };

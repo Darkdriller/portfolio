@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import Link from 'next/link';
 import { styles } from '../styles';
 import { navLinks } from '../lib/constants';
@@ -22,6 +22,38 @@ const Navbar: React.FC = () => {
     visible: { filter: 'blur(0px)', opacity: 1 },
   };
 
+  // Create refs for each section
+  const sectionRefs = React.useMemo(() => {
+    return navLinks.reduce((acc, link) => {
+      acc[link.id] = React.createRef<HTMLElement>();
+      return acc;
+    }, {} as { [key: string]: React.RefObject<HTMLElement> });
+  }, []);
+  // Check which section is in view
+  useEffect(() => {
+    const observers = navLinks.map((link) => {
+      const ref = sectionRefs[link.id];
+      if (!ref.current) return null;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActive(link.title);
+          }
+        },
+        { threshold: 0.5 }
+      );
+
+      observer.observe(ref.current);
+
+      return () => observer.disconnect();
+    });
+
+    return () => {
+      observers.forEach((observer) => observer && observer());
+    };
+  }, [sectionRefs]);
+
   return (
     <nav className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20 backdrop-blur-sm`}>
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
@@ -36,7 +68,7 @@ const Navbar: React.FC = () => {
             window.scrollTo(0, 0);
           }}>
             <img src={logo.src} alt="logo" width={36} height={36} className="object-contain" />
-            <p className="text-white text-[18px] font-bold cursor-pointer flex">Dhruvjyoti</p>
+            <p className="text-secondary dark:text-white text-[18px] font-bold cursor-pointer flex">Dhruvjyoti</p>
           </Link>
         </motion.div>
         <ul className="list-none hidden sm:flex flex-row gap-10 items-center">
@@ -73,7 +105,7 @@ const Navbar: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center"
           >
-            <a href="https://www.github.com/adityagoel28/" target="_blank" rel="noopener noreferrer" className="flex items-center">
+            <a href="https://www.github.com/Darkdriller/" target="_blank" rel="noopener noreferrer" className="flex items-center">
               <img src={github.src} width={24} height={24} className="object-contain" alt="GitHub" />
             </a>
           </motion.li>
@@ -124,7 +156,7 @@ const Navbar: React.FC = () => {
                 </a>
               </li>
               <li className="text-secondary font-poppins font-medium cursor-pointer text-[16px] flex items-center">
-                <a href="https://www.github.com/adityagoel28/" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                <a href="https://www.github.com/Darkdriller/" target="_blank" rel="noopener noreferrer" className="flex items-center">
                   <img src={github.src} width={24} height={24} className="object-contain" alt="GitHub" />
                 </a>
               </li>
