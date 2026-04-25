@@ -1,38 +1,29 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Theme } from '@/components/ThemeProvider'
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Dhruvjyoti Swain | Portfolio",
-  description: "Portfolio website of Dhruvjyoti Swain. View my portfolio of creative projects, including web development, data engineering, and many more . I have experience with a variety of technologies and software, and I am always looking for new challenges.",
+  description:
+    "Portfolio of Dhruvjyoti Swain — Python developer, full-stack engineer, data engineering. Rendered as an interactive terminal session.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${jetbrainsMono.variable} antialiased bg-term-bg text-term-fg font-mono`}
       >
-        
-        <Theme>
-          {children}
-        </Theme>
+        {children}
       </body>
     </html>
   );

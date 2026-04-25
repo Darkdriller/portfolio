@@ -32,9 +32,14 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
   color-scheme: dark;
+}
+
+html, body {
+  background: #0a0e14;
+  color: #a3b3cc;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
 .send-btn:hover{
