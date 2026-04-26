@@ -22,6 +22,7 @@ function Section({ id, phantomCmd, children }: { id: string; phantomCmd: string;
 const NAV_ITEMS: { label: string; target: string; href?: string }[] = [
   { label: "./about.md", target: "about" },
   { label: "./experience.log", target: "experience" },
+  { label: "./publications.bib", target: "publications" },
   { label: "./tech_stack.json", target: "tech" },
   { label: "./projects/", target: "projects" },
   { label: "./contact.sh", target: "contact" },
@@ -35,6 +36,7 @@ const NAV_ITEMS: { label: string; target: string; href?: string }[] = [
 const PHANTOM_CMD: Record<string, string> = {
   about: "cat about.md",
   experience: "tail -f experience.log",
+  publications: "cat publications.bib",
   tech: "cat tech_stack.json | jq",
   projects: "ls projects/",
   contact: "./contact.sh",
@@ -91,11 +93,36 @@ export function About() {
       <div className="rounded-[4px] border border-term-border bg-term-card p-4">
         <div className="text-term-purple text-[14px] mb-2">{"# INTRODUCTION"}</div>
         <p className="text-[12px] sm:text-[13px] leading-[1.7] text-term-fg">
-          B.Tech in Data Science &amp; AI. Full-stack developer with experience across Python (Django), React,
-          Three.js, SQL and AWS cloud services. Passionate about web dev and the intersection of ML/AI in
-          production systems.
+          Data Science graduate student with hands-on experience in full-stack development, machine learning,
+          and data engineering. Passionate about building intelligent systems that connect research with
+          practical applications. Currently pursuing a Master&apos;s in Data Science at FAU
+          Erlangen–Nürnberg, with prior industry experience at GE Digital and Moody&apos;s Analytics.
         </p>
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+
+        <div className="text-term-purple text-[14px] mt-5 mb-2">{"## EDUCATION"}</div>
+        <div className="text-[12px] sm:text-[13px] leading-[1.7] text-term-fg space-y-2">
+          <div>
+            <div>
+              <span className="text-term-muted">[2025-05 → present]</span>{" "}
+              <span className="text-white">M.Sc. Data Science</span>{" "}
+              <span className="text-term-muted">·</span>{" "}
+              <span className="text-term-blue">Friedrich-Alexander University, Erlangen-Nürnberg</span>
+            </div>
+            <div className="pl-6 sm:pl-8 text-term-muted">→ grade 1.8/5 (lower is better)</div>
+          </div>
+          <div>
+            <div>
+              <span className="text-term-muted">[2020-09 → 2024-06]</span>{" "}
+              <span className="text-white">B.Tech Computer Science &amp; Engineering (AI)</span>{" "}
+              <span className="text-term-muted">·</span>{" "}
+              <span className="text-term-blue">Amrita School of Computing, Amritapuri</span>
+            </div>
+            <div className="pl-6 sm:pl-8 text-term-muted">→ grade 9.59/10 (higher is better)</div>
+          </div>
+        </div>
+
+        <div className="text-term-purple text-[14px] mt-5 mb-2">{"## STACK"}</div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {TILES.map((t) => (
             <div
               key={t.label}
@@ -249,6 +276,139 @@ export function TechStack() {
           );
         })}
         <div className="text-term-muted">{"}"}</div>
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------- PUBLICATIONS ------------------------------ */
+
+type Pub = {
+  type: "article" | "inproceedings";
+  key: string;
+  title: string;
+  authors: string;
+  venue: string;
+  year: string;
+  meta?: string;
+  href: string;
+};
+
+const scholar = (q: string) =>
+  `https://scholar.google.com/scholar?q=${encodeURIComponent(q)}`;
+
+const PUBS: Pub[] = [
+  {
+    type: "article",
+    key: "sha2024villages",
+    title:
+      "Machine learning for sustainable development: Ranking villages for rural development initiatives",
+    authors:
+      "A. Sha, S. Madhan, M. Karthikeya, R. Megha, K. R. Dhanush, D. Swain, G. Gopakumar, M. Geetha",
+    venue: "Applied Spatial Analysis and Policy, vol. 18, p. 6",
+    year: "2024",
+    meta: "Impact Factor 2.00",
+    href: scholar(
+      "Machine learning for sustainable development Ranking villages for rural development initiatives Applied Spatial Analysis and Policy",
+    ),
+  },
+  {
+    type: "inproceedings",
+    key: "swain2024community",
+    title:
+      "A novel architecture for community detection between large social media creators",
+    authors: "D. Swain, S. Eesha, G. D. Raj, T. Anjali",
+    venue: "Procedia Computer Science, vol. 233, pp. 87–96 · ICIDCA 2024",
+    year: "2024",
+    href: scholar(
+      "A novel architecture for community detection between large social media creators Procedia Computer Science",
+    ),
+  },
+  {
+    type: "inproceedings",
+    key: "sha2024clustering",
+    title: "Data-driven clustering and insights for rural development in India",
+    authors: "A. Sha, S. Madhan, M. Karthikeya, R. Megha, D. Swain, G. Gopakumar",
+    venue: "Procedia Computer Science, vol. 233, pp. 336–342 · ICIDCA 2024",
+    year: "2024",
+    href: scholar(
+      "Data-driven clustering and insights for rural development in India Procedia Computer Science",
+    ),
+  },
+  {
+    type: "inproceedings",
+    key: "sha2023neurovascular",
+    title:
+      "Neuro-vascular mapping of junctions in human brain from MRI scans using image segmentation",
+    authors: "A. Sha, D. Swain, S. Yashwanth, T. Anjali",
+    venue: "ICACRS 2023, pp. 517–522",
+    year: "2023",
+    href: scholar(
+      "Neuro-vascular mapping of junctions in human brain from MRI scans using image segmentation ICACRS",
+    ),
+  },
+];
+
+export function Publications() {
+  return (
+    <Section id="publications" phantomCmd={PHANTOM_CMD.publications}>
+      <div className="text-[12px] sm:text-[13px] mb-2">
+        <Prompt cmd="cat publications.bib" />
+      </div>
+      <div className="rounded-[4px] border border-term-border bg-term-card p-4 text-[12px] leading-[1.7] overflow-x-auto">
+        {PUBS.map((p) => (
+          <div key={p.key} className="mb-4 last:mb-0">
+            <div>
+              <span className="text-term-muted">@</span>
+              <span className="text-term-purple">{p.type}</span>
+              <span className="text-term-muted">{"{"}</span>
+              <span className="text-term-blue">{p.key}</span>
+              <span className="text-term-muted">,</span>
+            </div>
+            <div className="pl-4 sm:pl-6">
+              <span className="text-term-muted">title </span>
+              <span className="text-term-muted">= </span>
+              <span className="text-term-blue2">&quot;{p.title}&quot;</span>
+              <span className="text-term-muted">,</span>
+            </div>
+            <div className="pl-4 sm:pl-6">
+              <span className="text-term-muted">author </span>
+              <span className="text-term-muted">= </span>
+              <span className="text-term-blue2">&quot;{p.authors}&quot;</span>
+              <span className="text-term-muted">,</span>
+            </div>
+            <div className="pl-4 sm:pl-6">
+              <span className="text-term-muted">venue </span>
+              <span className="text-term-muted">= </span>
+              <span className="text-term-blue2">&quot;{p.venue}&quot;</span>
+              <span className="text-term-muted">,</span>
+            </div>
+            <div className="pl-4 sm:pl-6">
+              <span className="text-term-muted">year </span>
+              <span className="text-term-muted">= </span>
+              <span className="text-term-blue2">{p.year}</span>
+              {p.meta && (
+                <>
+                  <span className="text-term-muted">,  </span>
+                  <span className="text-term-muted"># {p.meta}</span>
+                </>
+              )}
+            </div>
+            <div className="pl-4 sm:pl-6">
+              <span className="text-term-muted">url </span>
+              <span className="text-term-muted">= </span>
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-term-accent hover:underline break-all"
+              >
+                [ open → ]
+              </a>
+            </div>
+            <div className="text-term-muted">{"}"}</div>
+          </div>
+        ))}
       </div>
     </Section>
   );

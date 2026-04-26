@@ -4,6 +4,7 @@ import {
   Nav,
   About,
   Experience,
+  Publications,
   TechStack,
   Projects,
   Contact,
@@ -16,6 +17,7 @@ export default function Home() {
       <Nav />
       <About />
       <Experience />
+      <Publications />
       <TechStack />
       <Projects />
       <Contact />
