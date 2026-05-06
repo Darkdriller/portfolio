@@ -183,6 +183,27 @@ interface Project {
 
 const projects: Project[] = [
   {
+    name: "OpenJob",
+    description:
+      "Local, zero-cost AI job application autopilot. Collects postings from Greenhouse, Lever and Ashby boards, scores them against a config, and generates tailored LaTeX resumes and cover letters with a deterministic anti-hallucination guard. Logs every application to a Google Sheets tracker plus SQLite.",
+    tags: [
+      {
+        name: "Python",
+        color: "green-text-gradient",
+      },
+      {
+        name: "AI Agent",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "Playwright",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: python.src,
+    source_code_link: "https://github.com/Darkdriller/openjob",
+  },
+  {
     name: "Local LLM",
     description:
       "PowerToys Run plugin which will enable to use LLMs on Ollama endpoints locally. Built on C# and .Net and uses Ollama's API to run inference on local LLMs. Built for PowerToys Run.",
