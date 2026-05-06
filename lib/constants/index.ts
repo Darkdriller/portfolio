@@ -1,267 +1,268 @@
-import {
-  javascript,
-  python,
-  django,
-  aws,
-  html,
-  css,
-  reactjs,
-  tailwind,
-  mongodb,
-  git,
-  airflow,
-  threejs,
-  // sql,
-  docker,
-  ge_digital,
-  moodys,
-  simple_lang,
-  localllm,
-  sih,
-} from "@/public/assets";
+/* -------------------------------------------------------------------------- */
+/*                                    HERO                                    */
+/* -------------------------------------------------------------------------- */
 
-interface NavLink {
-  id: string;
+export const HERO = {
+  name: "Dhruvjyoti Swain",
+  tagline: "Python developer · Full-stack · Data engineering",
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/*                                  SHELL CHROME                              */
+/* -------------------------------------------------------------------------- */
+
+export const SHELL = {
+  fallbackBoot: "Last login: Apr 26 14:22 on ttys001",
+  pathDesktop: "~/dhruvjyoti — zsh — 120×40",
+  pathMobile: "~/dhruvjyoti $",
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/*                                     NAV                                    */
+/* -------------------------------------------------------------------------- */
+
+export interface NavItem {
+  label: string;
+  target: string;
+  href?: string;
+}
+
+export const NAV_ITEMS: NavItem[] = [
+  { label: "./about.md", target: "about" },
+  { label: "./experience.log", target: "experience" },
+  { label: "./publications.bib", target: "publications" },
+  { label: "./tech_stack.json", target: "tech" },
+  { label: "./projects/", target: "projects" },
+  { label: "./contact.sh", target: "contact" },
+  {
+    label: "./resume.pdf",
+    target: "_resume",
+    href: "https://drive.google.com/file/d/13B2fEL67qc-z1EVBlqqpXLEQ4BQnvcmS/view?usp=sharing",
+  },
+];
+
+export const PHANTOM_CMD: Record<string, string> = {
+  about: "cat about.md",
+  experience: "tail -f experience.log",
+  publications: "cat publications.bib",
+  tech: "cat tech_stack.json | jq",
+  projects: "ls projects/",
+  contact: "./contact.sh",
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                    ABOUT                                   */
+/* -------------------------------------------------------------------------- */
+
+export const ABOUT_INTRO =
+  "Data Science graduate student with hands-on experience in full-stack development, machine learning, and data engineering. Passionate about building intelligent systems that connect research with practical applications. Currently pursuing a Master's in Data Science at FAU Erlangen–Nürnberg, with prior industry experience at GE Digital and Moody's Analytics.";
+
+export interface EducationEntry {
+  span: string;
+  degree: string;
+  school: string;
+  grade: string;
+}
+
+export const EDUCATION: EducationEntry[] = [
+  {
+    span: "2025-05 → present",
+    degree: "M.Sc. Data Science",
+    school: "Friedrich-Alexander University, Erlangen-Nürnberg",
+    grade: "1.8/5 (lower is better)",
+  },
+  {
+    span: "2020-09 → 2024-06",
+    degree: "B.Tech Computer Science & Engineering (AI)",
+    school: "Amrita School of Computing, Amritapuri",
+    grade: "9.59/10 (higher is better)",
+  },
+];
+
+export interface Tile {
+  label: string;
+}
+
+export const TILES: Tile[] = [
+  { label: "WEB DEV" },
+  { label: "BACKEND" },
+  { label: "DATA ENG" },
+  { label: "CLOUD" },
+];
+
+/* -------------------------------------------------------------------------- */
+/*                                 EXPERIENCE                                 */
+/* -------------------------------------------------------------------------- */
+
+export interface ExperienceEntry {
+  span: string;
+  company: string;
+  role: string;
+  bullets: string[];
+}
+
+export const EXPERIENCE: ExperienceEntry[] = [
+  {
+    span: "2024-01 → 2024-07",
+    company: "GE Digital",
+    role: "Digital Technology Intern",
+    bullets: [
+      "Built CI/CD pipeline (Jenkins) for AWS ELB deployments",
+      "Integrated testing tool for 3-point data flow validation",
+    ],
+  },
+  {
+    span: "2023-05 → 2023-07",
+    company: "Moody's Analytics",
+    role: "Software Engineering Intern",
+    bullets: [
+      "SFTP → AWS Lambda/S3/Glue/Redshift data pipeline",
+      "Workflow scheduling + reusable code libraries",
+    ],
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/*                                    TECH                                    */
+/* -------------------------------------------------------------------------- */
+
+export type TechCategories = Record<string, string[]>;
+
+export const TECH: TechCategories = {
+  languages: ["python", "js", "ts", "rust", "c#"],
+  frameworks: ["django", "react", "tailwind", "three.js"],
+  data: ["airflow", "sql", "mongodb"],
+  infra: ["aws", "docker", "git"],
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                PUBLICATIONS                                */
+/* -------------------------------------------------------------------------- */
+
+export interface Pub {
+  type: "article" | "inproceedings";
+  key: string;
   title: string;
+  authors: string;
+  venue: string;
+  year: string;
+  meta?: string;
+  href: string;
 }
 
-export const navLinks: NavLink[] = [
+const scholar = (q: string) =>
+  `https://scholar.google.com/scholar?q=${encodeURIComponent(q)}`;
+
+export const PUBS: Pub[] = [
   {
-    id: "about",
-    title: "About",
+    type: "article",
+    key: "sha2024villages",
+    title:
+      "Machine learning for sustainable development: Ranking villages for rural development initiatives",
+    authors:
+      "A. Sha, S. Madhan, M. Karthikeya, R. Megha, K. R. Dhanush, D. Swain, G. Gopakumar, M. Geetha",
+    venue: "Applied Spatial Analysis and Policy, vol. 18, p. 6",
+    year: "2024",
+    meta: "Impact Factor 2.00",
+    href: scholar(
+      "Machine learning for sustainable development Ranking villages for rural development initiatives Applied Spatial Analysis and Policy",
+    ),
   },
   {
-    id: "work",
-    title: "Experience",
+    type: "inproceedings",
+    key: "swain2024community",
+    title:
+      "A novel architecture for community detection between large social media creators",
+    authors: "D. Swain, S. Eesha, G. D. Raj, T. Anjali",
+    venue: "Procedia Computer Science, vol. 233, pp. 87–96 · ICIDCA 2024",
+    year: "2024",
+    href: scholar(
+      "A novel architecture for community detection between large social media creators Procedia Computer Science",
+    ),
   },
   {
-    id: "projects",
-    title: "Projects",
+    type: "inproceedings",
+    key: "sha2024clustering",
+    title: "Data-driven clustering and insights for rural development in India",
+    authors: "A. Sha, S. Madhan, M. Karthikeya, R. Megha, D. Swain, G. Gopakumar",
+    venue: "Procedia Computer Science, vol. 233, pp. 336–342 · ICIDCA 2024",
+    year: "2024",
+    href: scholar(
+      "Data-driven clustering and insights for rural development in India Procedia Computer Science",
+    ),
   },
   {
-    id: "contact",
-    title: "Contact",
+    type: "inproceedings",
+    key: "sha2023neurovascular",
+    title:
+      "Neuro-vascular mapping of junctions in human brain from MRI scans using image segmentation",
+    authors: "A. Sha, D. Swain, S. Yashwanth, T. Anjali",
+    venue: "ICACRS 2023, pp. 517–522",
+    year: "2023",
+    href: scholar(
+      "Neuro-vascular mapping of junctions in human brain from MRI scans using image segmentation ICACRS",
+    ),
   },
 ];
 
-interface Service {
-  title: string;
-  icon: string;
-}
+/* -------------------------------------------------------------------------- */
+/*                                  PROJECTS                                  */
+/* -------------------------------------------------------------------------- */
 
-const services: Service[] = [
-  {
-    title: "Web Developer",
-    icon: reactjs.src,
-  },
-  {
-    title: "Backend Developer",
-    icon: django.src,
-  },
-  {
-    title: "Data Engineer",
-    icon: python.src,
-  },
-  {
-    title: "Cloud Engineer",
-    icon: aws.src,
-  },
-];
-
-interface Technology {
+export interface Project {
+  slug: string;
   name: string;
-  icon: string;
+  desc: string;
+  loc: string;
+  tags: string[];
+  long: string;
+  href: string;
 }
 
-const technologies: Technology[] = [
+export const PROJECTS: Project[] = [
   {
-    name: "Python",
-    icon: python.src,
+    slug: "openjob",
+    name: "openjob/",
+    desc: "AI job application autopilot · Python · Playwright",
+    loc: "—",
+    tags: ["Python", "AI Agent", "Playwright"],
+    long: "Local, zero-cost AI job application autopilot. Collects postings from Greenhouse, Lever and Ashby boards, scores them against a config, and generates tailored LaTeX resumes and cover letters with a deterministic anti-hallucination guard. Logs every application to a Google Sheets tracker plus SQLite.",
+    href: "https://github.com/Darkdriller/openjob",
   },
   {
-    name: "Django",
-    icon: django.src,
+    slug: "local-llm",
+    name: "local-llm/",
+    desc: "PowerToys Run plugin · C# .Net · Ollama API",
+    loc: "12.4K LOC",
+    tags: ["C#", ".Net", "PowerToys", "Ollama"],
+    long: "PowerToys Run plugin that lets you query local LLMs through Ollama endpoints from anywhere on your desktop. Built on C#/.Net, talks to Ollama's HTTP API, and surfaces inference results inside the PowerToys Run launcher.",
+    href: "https://github.com/Darkdriller/PowerToys-Run-LocalLLm",
   },
   {
-    name: "AWS",
-    icon: aws.src,
+    slug: "simple-lang",
+    name: "simple-lang/",
+    desc: "Compiler for 8-bit CPU · Rust · Verilog",
+    loc: "8.1K LOC",
+    tags: ["Rust", "Verilog", "Compiler"],
+    long: "A minimal compiler for SimpleLang, a small high-level language targeting an 8-bit CPU implemented in Verilog. Supports variable declarations, assignment, arithmetic, and conditionals — end-to-end from source to instruction stream.",
+    href: "https://github.com/Darkdriller/SimpleLang",
   },
   {
-    name: "Airflow",
-    icon: airflow.src,
-  },
-  // {
-  //   name: "SQL",
-  //   icon: sql,
-  // },
-  {
-    name: "HTML 5",
-    icon: html.src,
-  },
-  {
-    name: "CSS 3",
-    icon: css.src,
-  },
-  {
-    name: "JavaScript",
-    icon: javascript.src,
-  },
-  {
-    name: "React JS",
-    icon: reactjs.src,
-  },
-  {
-    name: "Tailwind CSS",
-    icon: tailwind.src,
-  },
-  {
-    name: "MongoDB",
-    icon: mongodb.src,
-  },
-  {
-    name: "Three JS",
-    icon: threejs.src,
-  },
-  {
-    name: "Git",
-    icon: git.src,
-  },
-  {
-    name: "Docker",
-    icon: docker.src,
+    slug: "rural-clustering",
+    name: "rural-clustering/",
+    desc: "SIH 2022 winner · Python regression · React",
+    loc: "15.2K LOC",
+    tags: ["Python", "Regression", "React"],
+    long: "Web app that clusters rural areas by amenities, population density, and connectivity, then ranks each cluster with a polynomial regression model. Winner of Smart India Hackathon 2022.",
+    href: "https://github.com/Darkdriller/sih_code_of_duty_1",
   },
 ];
 
-interface Experience {
-  title: string;
-  company_name: string;
-  icon: string;
-  iconBg: string;
-  date: string;
-  points: string[];
-}
+/* -------------------------------------------------------------------------- */
+/*                                   CONTACT                                  */
+/* -------------------------------------------------------------------------- */
 
-const experiences: Experience[] = [
-  {
-    title: "Digital Technology Intern",
-    company_name: "GE Digital",
-    icon: ge_digital.src,
-    iconBg: "#E6DEDD",
-    date: "Jan 2024 - July 2024",
-    points: [ 
-      "Developed a comprehensive CI/CD pipeline solution using Jenkins from the ground up to streamline deployment processes, reducing deployment time for artifacts to AWS ELB",
-      "Developed a integrated testing tool to test availability of data from 3 points in the data flow for a large Data pipeline in Python."
-    ],
-  },
-  {
-    title: "Software Engineering Intern",
-    company_name: "Moodys Analytics",
-    icon: moodys.src,
-    iconBg: '#E6DEDD',
-    date: "May 2023 - July 2023",
-    points: [
-      "Worked on a creating a Data Pipeline from sftp to AWS infrastructure using Lambda, AWS S3, AWS Glue  and Redshift.",
-      "Scheduled and monitored workflows to ensure that all processes are running smoothly and on time.",
-      "Developed reusable code libraries to expedite future development efforts, reducing time-to-market for new features."
-    ],
-  },
-];
-
-
-interface Tag {
-  name: string;
-  color: string;
-}
-
-interface Project {
-  name: string;
-  description: string;
-  tags: Tag[];
-  image: string;
-  source_code_link: string;
-}
-
-const projects: Project[] = [
-  {
-    name: "OpenJob",
-    description:
-      "Local, zero-cost AI job application autopilot. Collects postings from Greenhouse, Lever and Ashby boards, scores them against a config, and generates tailored LaTeX resumes and cover letters with a deterministic anti-hallucination guard. Logs every application to a Google Sheets tracker plus SQLite.",
-    tags: [
-      {
-        name: "Python",
-        color: "green-text-gradient",
-      },
-      {
-        name: "AI Agent",
-        color: "blue-text-gradient",
-      },
-      {
-        name: "Playwright",
-        color: "pink-text-gradient",
-      },
-    ],
-    image: python.src,
-    source_code_link: "https://github.com/Darkdriller/openjob",
-  },
-  {
-    name: "Local LLM",
-    description:
-      "PowerToys Run plugin which will enable to use LLMs on Ollama endpoints locally. Built on C# and .Net and uses Ollama's API to run inference on local LLMs. Built for PowerToys Run.",
-    tags: [
-      {
-        name: "C#",
-        color: "green-text-gradient",
-      },
-      {
-        name: ".Net",
-        color: "blue-text-gradient",
-      },
-      {
-        name: " Microsoft PowerToys Run",
-        color: "pink-text-gradient",
-      },
-    ],
-    image: localllm.src,
-    source_code_link: "https://github.com/Darkdriller/PowerToys-Run-LocalLLm",
-  },
-  {
-    name: "Simple Lang",
-    description:
-      "This project implements a basic compiler for a minimalistic high-level language called SimpleLang designed to run on an 8-bit CPU. The language includes basic constructs such as variable declarations, assignments, arithmetic operations, and conditional statements.",
-    tags: [
-      {
-        name: "Rust",
-        color: "green-text-gradient",
-      },
-      {
-        name: "verilog",
-        color: "blue-text-gradient",
-      },
-    ],
-    image: simple_lang.src,
-    source_code_link: "https://github.com/Darkdriller/SimpleLang",
-  },
-  {
-    name: "Rural Clustering",
-    description:
-      "A web app to cluster rural areas based on their amenities, population density and connectivity. Also uses a polynomial regression model to predict the ranking of a cluster based on the amenities in the area. Winner of Smart India Hackathon 2022.",
-    tags: [
-      {
-        name: "Python",
-        color: "green-text-gradient",
-      },
-      {
-        name: "Regression",
-        color: "blue-text-gradient",
-      },
-      {
-        name: "React",
-        color: "pink-text-gradient",
-      },
-    ],
-    image: sih.src,
-    source_code_link: "https://github.com/Darkdriller/sih_code_of_duty_1",
-  }
-];
-
-export { services, technologies, experiences, projects };
+export const CONTACT = {
+  toName: "Dhruvjyoti Swain",
+  toEmail: "swaindhruv28@gmail.com",
+} as const;

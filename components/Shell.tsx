@@ -1,19 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-function bootLine() {
-  const d = new Date();
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const m = months[d.getMonth()];
-  const day = String(d.getDate()).padStart(2, " ");
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mm = String(d.getMinutes()).padStart(2, "0");
-  return `Last login: ${m} ${day} ${hh}:${mm} on ttys001`;
-}
+import { bootLine } from "@/lib/utils";
+import { SHELL } from "@/lib/constants";
 
 export function Shell({ children }: { children: React.ReactNode }) {
-  const [boot, setBoot] = useState<string>("Last login: Apr 26 14:22 on ttys001");
+  const [boot, setBoot] = useState<string>(SHELL.fallbackBoot);
   useEffect(() => setBoot(bootLine()), []);
 
   return (
@@ -28,8 +20,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <span className="block w-3 h-3 rounded-full bg-[#27c93f]" />
           </div>
           <div className="flex-1 text-center text-[11px] text-term-muted select-none">
-            <span className="hidden sm:inline">~/dhruvjyoti — zsh — 120×40</span>
-            <span className="sm:hidden">~/dhruvjyoti $</span>
+            <span className="hidden sm:inline">{SHELL.pathDesktop}</span>
+            <span className="sm:hidden">{SHELL.pathMobile}</span>
           </div>
           <div className="hidden sm:flex items-center gap-2 text-[10px] text-term-muted">
             <span className="inline-block w-[6px] h-[6px] rounded-full bg-term-accent animate-pulseDot" />

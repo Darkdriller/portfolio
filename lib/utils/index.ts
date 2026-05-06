@@ -40,19 +40,6 @@ export function useTypewriter(text: string, cps: number, start = true, skip = fa
   return { out, done };
 }
 
-/** Stylised prompt: dhruv@portfolio:~$ <cmd> */
-export function Prompt({ cmd, host = "dhruv@portfolio", path = "~" }: { cmd: string; host?: string; path?: string }) {
-  return (
-    <span className="font-mono">
-      <span className="text-term-accent">{host}</span>
-      <span className="text-term-muted">:</span>
-      <span className="text-term-blue">{path}</span>
-      <span className="text-term-muted">$ </span>
-      <span className="text-white">{cmd}</span>
-    </span>
-  );
-}
-
 /** Used for nav-link smooth scroll + phantom-prompt ripple at the destination. */
 export function scrollToWithPhantom(id: string) {
   const el = document.getElementById(id);
@@ -67,4 +54,14 @@ export function scrollToWithPhantom(id: string) {
       phantom.classList.add("opacity-0");
     }, 1400);
   }
+}
+
+/** Format Date as `Last login: Mmm dd HH:MM on ttys001`. */
+export function bootLine(d: Date = new Date()) {
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const m = months[d.getMonth()];
+  const day = String(d.getDate()).padStart(2, " ");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  return `Last login: ${m} ${day} ${hh}:${mm} on ttys001`;
 }

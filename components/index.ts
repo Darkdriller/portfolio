@@ -1,18 +1,9 @@
-'use client';
-import Hero from './Hero';
-import Navbar from './Navbar';
-import About from './About';
-import Tech from './Tech';
-import Experience from './Experience';
-import Projects from './Projects';
-import Contact from './Contact';
-
-export {
-  Hero,
-  Navbar,
-  About,
-  Tech,
-  Experience,
-  Projects,
-  Contact,
-};
+export { Shell } from "./Shell";
+export { Hero } from "./Hero";
+export { Nav } from "./Nav";
+export { About } from "./About";
+export { Experience } from "./Experience";
+export { Publications } from "./Publications";
+export { Tech } from "./Tech";
+export { Projects } from "./Projects";
+export { Contact } from "./Contact";

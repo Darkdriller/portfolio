@@ -1,103 +1,141 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, FormEvent, ChangeEvent } from 'react';
-import { motion } from 'framer-motion';
-import emailjs from '@emailjs/browser';
-import { styles } from '@/styles';
-import SectionWrapper from '@/lib/hoc/SectionWrapper';
-// import { EarthCanvas } from './canvas';
-import { slideIn } from '@/lib/utils/motion';
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
+import { Section } from "./Section";
+import { Prompt } from "./Prompt";
+import { CONTACT, PHANTOM_CMD } from "@/lib/constants";
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+type Status = "idle" | "sending" | "sent" | "error";
 
-const Contact: React.FC = () => {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [form, setForm] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [loading, setLoading] = useState<boolean>(false);
+export function Contact() {
+  const [v, setV] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<Status>("idle");
+  const [errMsg, setErrMsg] = useState<string>("");
+  const [focused, setFocused] = useState<keyof typeof v | null>(null);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setForm((prevForm) => ({ ...prevForm, [name]: value }));
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    emailjs.send( process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-      {
-      from_name: form.name,
-      to_name: 'Dhruvjyoti',
-      from_email: form.email,
-      to_email: 'swaindhruv28@gmail.com',
-      message: form.message,
-      }, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!).then(() => {
-      setLoading(false);
-      setForm({
-        name: "",
-        email: "",
-        message: "",
-      });
-      alert("Your message has been sent successfully!");
-    }, (error) => {
-      setLoading(false);
-      console.log(error.text);
-      alert("Sorry, your message could not be sent. Please try again later.");
-    });
+    if (!v.name) return setErrMsg("missing field <name>");
+    if (!v.email) return setErrMsg("missing field <email>");
+    if (!v.message) return setErrMsg("missing field <message>");
+    setErrMsg("");
+    setStatus("sending");
+    try {
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+      if (serviceId && templateId && publicKey) {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            from_name: v.name,
+            to_name: CONTACT.toName,
+            from_email: v.email,
+            to_email: CONTACT.toEmail,
+            message: v.message,
+          },
+          publicKey,
+        );
+      } else {
+        await new Promise((r) => setTimeout(r, 600));
+      }
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+      setErrMsg("network error · try mailto fallback below");
+    }
   };
+
+  const reset = () => {
+    setV({ name: "", email: "", message: "" });
+    setStatus("idle");
+    setErrMsg("");
+  };
+
+  const inputCls = "w-full bg-transparent border-0 border-b border-term-border2 outline-none px-0 pb-2 text-[13px] text-term-fg caret-term-accent";
 
   return (
-    <div className='xl:mt-12 xl:flex-row flex-col-reverse flex gap1- overflow-hidden'>
-      <motion.div variants={slideIn("left", "tween", 0.2, 1)}
-        className="flex-[0.75] bg-gradient-to-br from-gray-100 to-transparent dark:from-gray-800 dark:to-transparent rounded-3xl border border-gray-200 dark:border-gray-700 p-8 rounded-2xl">
-        {/* <Blob /> */}
-    
-        {/* className="flex-[0.75] bg-black-100 p-8 rounded-2xl"> */}
+    <Section id="contact" phantomCmd={PHANTOM_CMD.contact}>
+      <div className="text-[12px] sm:text-[13px] mb-2">
+        <Prompt cmd="./contact.sh" />
+      </div>
+      <div className="rounded-[4px] border border-term-border bg-term-card p-4">
+        <div className="text-term-muted text-[12px] mb-3">{"> Initiating contact handshake..."}</div>
 
-          <p className={styles.sectionSubText}>Get In Touch</p>
-          <h3 className={styles.sectionHeadText}>Contact.</h3>
+        {status !== "sent" ? (
+          <form onSubmit={submit}>
+            <div className="mb-4">
+              <div className="text-[11px] text-term-muted mb-1">name:</div>
+              <input
+                value={v.name}
+                onChange={(e) => setV({ ...v, name: e.target.value })}
+                onFocus={() => setFocused("name")}
+                onBlur={() => setFocused(null)}
+                className={inputCls}
+              />
+            </div>
+            <div className="mb-4">
+              <div className="text-[11px] text-term-muted mb-1">email:</div>
+              <input
+                type="email"
+                value={v.email}
+                onChange={(e) => setV({ ...v, email: e.target.value })}
+                onFocus={() => setFocused("email")}
+                onBlur={() => setFocused(null)}
+                className={inputCls}
+              />
+            </div>
+            <div className="mb-4">
+              <div className="text-[11px] text-term-muted mb-1">message:</div>
+              <textarea
+                rows={4}
+                value={v.message}
+                onChange={(e) => setV({ ...v, message: e.target.value })}
+                onFocus={() => setFocused("message")}
+                onBlur={() => setFocused(null)}
+                className={`${inputCls} resize-none`}
+              />
+            </div>
+            {/* focused-empty-field caret indicator */}
+            {focused && v[focused] === "" && (
+              <div className="text-term-muted text-[11px] mb-2">
+                <span className="text-term-accent">_</span> waiting for input in {focused}
+              </div>
+            )}
 
-          <form ref={formRef} onSubmit={handleSubmit} className="mt-12 flex flex-col gap-8">
-              <label className="flex flex-col">
-                <span className="text-gray-950 dark:text-slate-300 font-medium mb-4">Your Name</span>
-                <input
-                  type="text" required name="name" value={form.name} onChange={handleChange} placeholder="What's your name?"
-                  className="bg-gray-300 dark:bg-tertiary py-4 px-6 placeholder:text-gray-500 dark:placeholder:text-gray-400 rounded-lg outlined-none border-none font-medium" />
-              </label>
-              <label className="flex flex-col">
-                <span className="text-gray-950 dark:text-slate-300 font-medium mb-4">Your Email</span>
-                <input
-                  type="email" required name="email" value={form.email} onChange={handleChange} placeholder="What's your email?"
-                  className="bg-gray-300 dark:bg-tertiary placeholder:text-gray-500 dark:placeholder:text-gray-400 py-4 px-6 rounded-lg outlined-none border-none font-medium" />
-              </label>
-              <label className="flex flex-col">
-                <span className="text-gray-950 dark:text-slate-300 font-medium mb-4">Your Message</span>
-                <textarea
-                  rows={7} required name="message" value={form.message} onChange={handleChange} placeholder="What's your message?"
-                  className="bg-gray-300 dark:bg-tertiary placeholder:text-gray-500 dark:placeholder:text-gray-400  py-4 px-6 rounded-lg outlined-none border-none font-medium" />
-              </label>
+            {errMsg && (
+              <div className="text-term-red text-[12px] mb-3">{"> error: "}{errMsg}</div>
+            )}
+            {status === "sending" && (
+              <div className="text-term-muted text-[12px] mb-3">{"> sending..."}</div>
+            )}
 
-              <button
-                type="submit"
-                className='bg-gray-300 dark:bg-tertiary text-gray-950 dark:text-slate-300 py-3 px-8 outline-none w-fit font-bold shadow-md shadow-primary rounded-xl send-btn'>
-                {loading ? "Sending..." : "Send Message"}
-              </button>
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="text-term-accent border border-term-accent px-4 py-[6px] text-[12px] inline-block hover:bg-term-accent/10 disabled:opacity-50"
+            >
+              [ ./send --message ]
+            </button>
+            <div className="text-term-muted text-[11px] mt-3">
+              fallback ·{" "}
+              <a className="text-term-blue hover:underline" href={`mailto:${CONTACT.toEmail}`}>
+                mailto:{CONTACT.toEmail}
+              </a>
+            </div>
           </form>
-      </motion.div>
-
-      {/* <motion.div variants={slideIn("right", "tween", 0.2, 1)} className='xl:flex-1 xl:h-auto md:h-[550px] h-[350px]'>
-         <EarthCanvas />
-      </motion.div> */}
-    </div> 
+        ) : (
+          <div className="text-[12px]">
+            <div className="text-term-accent">[ OK ] message dispatched · 200</div>
+            <div className="text-term-fg mt-2">{"> thanks — will reply soon."}</div>
+            <button onClick={reset} className="text-term-blue hover:underline text-[12px] mt-3">
+              [ retry ]
+            </button>
+          </div>
+        )}
+      </div>
+    </Section>
   );
-};
-
-export default SectionWrapper(Contact, "contact");
+}

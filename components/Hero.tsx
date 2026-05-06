@@ -1,40 +1,95 @@
-import React from 'react';
-import { styles } from '../styles';
-import JelloText from './JelloText';
-const Hero = () => {
+"use client";
+
+import { useEffect, useState } from "react";
+import { Prompt } from "./Prompt";
+import { prefersReducedMotion, useTypewriter } from "@/lib/utils";
+import { HERO } from "@/lib/constants";
+
+export function Hero() {
+  const [skip, setSkip] = useState(false);
+  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (prefersReducedMotion() || sessionStorage.getItem("heroAnimDone") === "1") {
+      setSkip(true);
+      setPhase(4);
+      return;
+    }
+    const onAny = () => setSkip(true);
+    window.addEventListener("keydown", onAny, { once: true });
+    window.addEventListener("click", onAny, { once: true });
+    window.addEventListener("wheel", onAny, { once: true, passive: true });
+    window.addEventListener("touchstart", onAny, { once: true, passive: true });
+    return () => {
+      window.removeEventListener("keydown", onAny);
+      window.removeEventListener("click", onAny);
+      window.removeEventListener("wheel", onAny);
+      window.removeEventListener("touchstart", onAny);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (phase === 4) sessionStorage.setItem("heroAnimDone", "1");
+  }, [phase]);
+
+  const cmd = useTypewriter("whoami", 30, phase === 0, skip);
+  useEffect(() => {
+    if (cmd.done && phase === 0) {
+      const t = window.setTimeout(() => setPhase(1), skip ? 0 : 200);
+      return () => window.clearTimeout(t);
+    }
+  }, [cmd.done, phase, skip]);
+
+  const name = useTypewriter(HERO.name, 50, phase >= 1, skip);
+  useEffect(() => {
+    if (name.done && phase === 1) {
+      const t = window.setTimeout(() => setPhase(2), skip ? 0 : 300);
+      return () => window.clearTimeout(t);
+    }
+  }, [name.done, phase, skip]);
+
+  const tag = useTypewriter(HERO.tagline, 20, phase >= 2, skip);
+  useEffect(() => {
+    if (tag.done && phase === 2) setPhase(3);
+  }, [tag.done, phase]);
+
+  useEffect(() => {
+    if (phase === 3) {
+      const t = window.setTimeout(() => setPhase(4), skip ? 0 : 400);
+      return () => window.clearTimeout(t);
+    }
+  }, [phase, skip]);
+
   return (
-    <section className="relative w-full h-screen mx-auto">
-      <div className={`sm:px-20 px-12 absolute inset-0 top-[20%] left-[5%] max-w-7xl mx-auto flex flex-row items-start gap-5`}>
-        <div className="flex flex-col justify-center items-center mt-5">
-          <div className="w-5 h-5 rounded-full bg-[#915eff]" /> 
-          <div className="w-1 sm:h-80 h-40 violet-gradient" />
-        </div>
-        <div>
-        </div>
-        <div>
-          <h1 className={`${styles.heroHeadText}`}>
-            <JelloText text="Hi, I'm"/> &nbsp;
-            <JelloText text="Dhruv" className="font-bold text-purple-600" />
-          </h1>
-          <p className={`${styles.heroSubText} mt-2`}>
-            <JelloText text="I am a Python Developer" className="inline-block" />
-            <br className="sm:block hdden"/>
-            <JelloText text="with a proficiency in Full Stack Development." className="inline-block" />
-            <br/><br/>
-            <a href="https://drive.google.com/file/d/1hjKocj52VzaWcQANctK9-TKIyUk198Xc/view?usp=drive_link" target="_blank"
-            className="relative z-10 text-[#915eff] font-bold">
-              My Resume
-            </a>
-          </p>
-        </div>
+    <section className="mt-2">
+      <div>
+        <Prompt cmd={cmd.out} />
+        {!cmd.done && <span className="inline-block w-[8px] h-[14px] bg-term-accent align-middle ml-[1px] animate-blink" />}
       </div>
 
-      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center">
-        <a href='#about'>
-        </a>
-      </div>
+      {phase >= 1 && (
+        <h1 className="mt-4 sm:mt-6 text-white font-bold leading-[1.05] tracking-[-1px] sm:tracking-[-2px] text-[26px] sm:text-[64px] break-words">
+          <span className="whitespace-pre-wrap">{name.out}</span>
+          <span
+            aria-hidden
+            className={`inline-block align-middle ml-2 bg-term-accent w-[12px] h-[22px] sm:w-[32px] sm:h-[56px] ${name.done ? "animate-blink" : ""}`}
+          />
+        </h1>
+      )}
+
+      {phase >= 2 && (
+        <p className="mt-4 sm:mt-5 text-[14px] sm:text-[18px] text-term-fg">
+          <span className="text-term-accent">{"> "}</span>
+          {tag.out}
+        </p>
+      )}
+
+      {phase >= 4 && (
+        <p className="mt-4 text-[12px] sm:text-[13px] text-term-muted animate-fadeUp">
+          type <span className="text-term-accent">help</span> to see available commands · ↓ scroll to explore
+        </p>
+      )}
     </section>
-  )
+  );
 }
-
-export default Hero

@@ -1,14 +1,14 @@
-import { Shell } from "@/components/terminal/Shell";
-import { Hero } from "@/components/terminal/Hero";
 import {
+  Shell,
+  Hero,
   Nav,
   About,
   Experience,
   Publications,
-  TechStack,
+  Tech,
   Projects,
   Contact,
-} from "@/components/terminal/Sections";
+} from "@/components";
 
 export default function Home() {
   return (
@@ -18,7 +18,7 @@ export default function Home() {
       <About />
       <Experience />
       <Publications />
-      <TechStack />
+      <Tech />
       <Projects />
       <Contact />
       <footer className="mt-16 mb-2 text-[11px] text-term-muted text-center">
